@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>نار وبهار | Nar & Bahar Restaurant</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;background:#080808;color:#fff;font-family:'Tajawal',sans-serif;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:#0D0D0D;}
+::-webkit-scrollbar-thumb{background:#FF6B00;border-radius:3px;}
+input,select,textarea{color-scheme:dark;}
+@keyframes fadeDown{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes floatUp{0%{opacity:0;transform:translateY(0) scale(.5)}10%{opacity:.9}85%{opacity:0}100%{transform:translateY(-100vh) scale(1.3);opacity:0}}
+@keyframes slideRight{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes slideLeft{from{transform:translateX(-120%);opacity:0}to{transform:translateX(0);opacity:1}}
+.btn-primary{background:linear-gradient(135deg,#FF6B00,#FF3D00);border:none;color:#fff;font-family:'Tajawal',sans-serif;font-weight:800;cursor:pointer;border-radius:50px;transition:all .3s;padding:14px 32px;font-size:15px;}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(255,107,0,.6);}
+.btn-outline{background:transparent;border:2px solid #FF6B00;color:#FF6B00;font-family:'Tajawal',sans-serif;font-weight:800;cursor:pointer;border-radius:50px;transition:all .3s;padding:12px 30px;font-size:15px;}
+.btn-outline:hover{background:#FF6B00;color:#fff;}
+.card{background:#111;border:1px solid #1e1e1e;border-radius:20px;transition:all .3s;}
+.card:hover{border-color:rgba(255,107,0,.4);background:rgba(255,107,0,.05);transform:translateY(-6px);}
+@media(max-width:768px){.desktop-nav{display:none!important}.mobile-btn{display:flex!important}}
+@media(min-width:769px){.mobile-btn{display:none!important}}
+</style>
+</head>
+<body>
+
+<nav style="position:fixed;top:0;left:0;right:0;zIndex:500;height:68px;display:flex;align-items:center;padding:0 20px;background:rgba(6,6,6,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,107,0,.18);transition:all .4s ease;">
+  <div style="max-width:1200px;margin:0 auto;width:100%;display:flex;align-items:center;justify-content:space-between;">
+    <button onclick="goPage('home')" style="background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:10px;">
+      <div style="color:#FF6B00;font-size:20px;font-weight:900;line-height:1;">نار وبهار</div>
+      <div style="color:#FFD700;font-size:9px;letter-spacing:3px;font-family:Georgia,serif;">NAR & BAHAR</div>
+    </button>
+    <div class="desktop-nav" style="display:flex;gap:4;align-items:center;">
+      <button onclick="goPage('home')" style="background:none;border:1px solid transparent;color:#bbb;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;">Home</button>
+      <button onclick="goPage('menu')" style="background:none;border:1px solid transparent;color:#bbb;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;">Menu</button>
+      <button onclick="goPage('about')" style="background:none;border:1px solid transparent;color:#bbb;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;">About</button>
+      <button onclick="goPage('contact')" style="background:none;border:1px solid transparent;color:#bbb;font-family:'Tajawal',sans-serif;font-size:14px;font-weight:600;padding:6px 14px;border-radius:8px;cursor:pointer;">Contact</button>
+    </div>
+    <div style="display:flex;gap:10px;align-items:center;">
+      <button onclick="toggleLang()" style="background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.35);color:#FF6B00;font-family:'Tajawal',sans-serif;font-size:13px;font-weight:700;padding:6px 14px;border-radius:8px;cursor:pointer;" id="langBtn">EN</button>
+      <button onclick="openCart()" style="background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.35);color:#FF6B00;padding:6px 14px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:6px;font-size:18px;position:relative;">🛒<span id="cartCount" style="background:#FF3D00;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:900;display:flex;align-items:center;justify-content:center;display:none;">0</span></button>
+    </div>
+  </div>
+</nav>
+
+<div id="root"></div>
+
+<footer style="background:#030303;border-top:1px solid #141414;padding:60px 24px 24px;text-align:center;color:rgba(255,255,255,.3);">
+  <p>© 2024 نار وبهار — Nar & Bahar Restaurant</p>
+</footer>
+
+<a href="https://wa.me/963947001493" target="_blank" style="position:fixed;bottom:24px;right:24px;z-index:400;width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#25D366,#128C7E);display:flex;align-items:center;justify-content:center;font-size:26px;text-decoration:none;box-shadow:0 4px 20px rgba(37,211,102,.5);animation:pulse 2.5s ease-in-out infinite;">💬</a>
+
+<script>
+const WA = "963947001493";
+let currentLang = "ar";
+let currentPage = "home";
+let cart = [];
+
+const MENU = {
+  items: [
+    {id:1,cat:"shawarma",ar:"شاورما عربي",en:"Arabic Shawarma",dar:"شاورما لحم أصيلة بتوابل النار وصوص الثوم البيتي",den:"Authentic meat shawarma with fire spices and homemade garlic sauce",image:"https://images.unsplash.com/photo-1599599810694-b5ac4dd67ffd?w=500&h=400&fit=crop",price:12000,spicy:2,tags:["best"]},
+    {id:2,cat:"shawarma",ar:"شاورما دجاج",en:"Chicken Shawarma",dar:"دجاج مشوي بالبهارات السرية مع خضار طازجة وصوص خاص",den:"Grilled chicken with secret spices, fresh veggies and special sauce",image:"https://images.unsplash.com/photo-1599599810026-8a66c9ad2b1b?w=500&h=400&fit=crop",price:10000,spicy:1,tags:["pop"]},
+    {id:3,cat:"shawarma",ar:"شاورما مشكل",en:"Mixed Shawarma",dar:"لحم ودجاج معاً بتوابل نار وبهار الفريدة",den:"Beef and chicken together with Nar & Bahar unique spices",image:"https://images.unsplash.com/photo-1599599810398-91c1d3ef3e16?w=500&h=400&fit=crop",price:14000,spicy:2,tags:["special"]},
+    {id:4,cat:"grills",ar:"كباب حلبي",en:"Aleppo Kebab",dar:"كباب مشوي على الفحم بالنكهة الحلبية الأصيلة",den:"Charcoal-grilled kebab with authentic Aleppo flavor",image:"https://images.unsplash.com/photo-1599555810026-8a66c9ad2b1b?w=500&h=400&fit=crop",price:18000,spicy:2,tags:["best"]},
+    {id:7,cat:"burgers",ar:"برغر نار",en:"Nar Burger",dar:"برغر لحم 200غ مع جبن ذائب وسس نار الحار وخس طازج",den:"200g beef patty with melted cheese, spicy Nar sauce and fresh lettuce",image:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&h=400&fit=crop",price:15000,spicy:3,tags:["spicy","best"]},
+    {id:10,cat:"crispy",ar:"كريسبي سبايسي",en:"Spicy Crispy",dar:"دجاج كريسبي حار جداً بتتبيلة النار السرية",den:"Extra crispy chicken in our secret fire marinade",image:"https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=500&h=400&fit=crop",price:12000,spicy:3,tags:["spicy","best"]},
+    {id:13,cat:"sides",ar:"بطاطا مقلية",en:"French Fries",dar:"بطاطا ذهبية مقرمشة مع صوص الاختيار",den:"Golden crispy fries with your choice of sauce",image:"https://images.unsplash.com/photo-1599599810621-7b6f2ea3e46f?w=500&h=400&fit=crop",price:4000,spicy:0,tags:[]},
+    {id:16,cat:"drinks",ar:"عصير ليمون نعناع",en:"Lemon Mint Juice",dar:"عصير ليمون طازج مع النعناع والثلج المجروش",den:"Fresh lemon juice with mint and crushed ice",image:"https://images.unsplash.com/photo-1600788907-6b9f8e0a38cb?w=500&h=400&fit=crop",price:4000,spicy:0,tags:["pop"]},
+  ]
+};
+
+function formatPrice(p) {
+  return p.toLocaleString("ar-SY") + " ل.س";
+}
+
+function toggleLang() {
+  currentLang = currentLang === "ar" ? "en" : "ar";
+  document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+  document.getElementById("langBtn").textContent = currentLang === "ar" ? "EN" : "عربي";
+  renderPage();
+}
+
+function goPage(page) {
+  currentPage = page;
+  window.scrollTo({ top: 0 });
+  renderPage();
+}
+
+function addToCart(dish) {
+  const existing = cart.find(i => i.id === dish.id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...dish, qty: 1 });
+  }
+  updateCartUI();
+  showToast(currentLang === "ar" ? `✅ تمت إضافة ${dish.ar}` : `✅ Added ${dish.en}`);
+}
+
+function updateCartUI() {
+  const count = cart.reduce((s, i) => s + i.qty, 0);
+  const countEl = document.getElementById("cartCount");
+  if (count > 0) {
+    countEl.textContent = count;
+    countEl.style.display = "flex";
+  } else {
+    countEl.style.display = "none";
+  }
+}
+
+function openCart() {
+  const ar = currentLang === "ar";
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  
+  let html = `
+    <div style="position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:flex;justify-content:${ar ? 'flex-start' : 'flex-end'};animation:slideRight .35s ease;" onclick="if(event.target===this)closeCart()">
+      <div style="width:${Math.min(420, window.innerWidth)}px;background:#0D0D0D;border-left:${ar ? 'none' : '1px solid #222'};border-right:${ar ? '1px solid #222' : 'none'};height:100%;display:flex;flex-direction:column;padding:24px;overflow-y:auto;" onclick="event.stopPropagation()">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+          <h2 style="color:#FF6B00;font-size:22px;font-weight:800;margin:0;">${ar ? "🛒 سلة الطلبات" : "🛒 Your Order"}</h2>
+          <button onclick="closeCart()" style="background:none;border:none;color:#666;font-size:26px;cursor:pointer;">✕</button>
+        </div>
+  `;
+
+  if (cart.length === 0) {
+    html += `<div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#444;gap:16px;"><span style="font-size:64px;">🍽️</span><p>${ar ? "السلة فارغة" : "Cart is empty"}</p></div>`;
+  } else {
+    html += `<div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;">`;
+    cart.forEach(item => {
+      html += `
+        <div style="background:#1a1a1a;border-radius:14px;padding:14px;border:1px solid #2a2a2a;display:flex;gap:12px;align-items:center;">
+          <img src="${item.image}" alt="" style="width:50px;height:50px;border-radius:10px;object-fit:cover;"/>
+          <div style="flex:1;">
+            <p style="color:#fff;font-size:15px;font-weight:700;margin:0 0 4px;">${ar ? item.ar : item.en}</p>
+            <p style="color:#FF6B00;font-size:14px;margin:0;">${formatPrice(item.price * item.qty)}</p>
+          </div>
+          <button onclick="removeCart(${item.id})" style="background:none;border:none;font-size:18px;cursor:pointer;opacity:.6;">🗑️</button>
+        </div>
+      `;
+    });
+    html += `</div>`;
+    html += `
+      <div style="margin-top:20px;padding-top:20px;border-top:1px solid #222;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:16px;">
+          <span style="color:#aaa;font-size:16px;">${ar ? "المجموع:" : "Total:"}</span>
+          <span style="color:#FF6B00;font-size:22px;font-weight:900;">${formatPrice(total)}</span>
+        </div>
+        <button onclick="sendWhatsApp()" class="btn-primary" style="width:100%;background:linear-gradient(135deg,#25D366,#128C7E);box-shadow:0 4px 20px rgba(37,211,102,.4);display:flex;align-items:center;justify-content:center;gap:10px;">
+          <span>💬</span>
+          ${ar ? "إرسال عبر واتساب" : "Send via WhatsApp"}
+        </button>
+      </div>
+    `;
+  }
+
+  html += `</div></div>`;
+  document.body.insertAdjacentHTML("beforeend", html);
+}
+
+function closeCart() {
+  const cartEl = document.querySelector('[style*="position:fixed"][style*="z-index:1000"]');
+  if (cartEl) cartEl.remove();
+}
+
+function removeCart(id) {
+  cart = cart.filter(i => i.id !== id);
+  closeCart();
+  openCart();
+}
+
+function sendWhatsApp() {
+  if (!cart.length) return;
+  const ar = currentLang === "ar";
+  const hdr = ar ? "🔥 طلب جديد — نار وبهار 🔥\n\n" : "🔥 New Order — Nar & Bahar 🔥\n\n";
+  const body = cart.map(i => `• ${ar ? i.ar : i.en} × ${i.qty}  →  ${formatPrice(i.price * i.qty)}`).join("\n");
+  const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const tot = `\n\n💰 ${ar ? "المجموع" : "Total"}: ${formatPrice(total)}`;
+  window.open(`https://wa.me/${WA}?text=${encodeURIComponent(hdr + body + tot)}`, "_blank");
+}
+
+function showToast(msg) {
+  const el = document.createElement("div");
+  el.style.cssText = `position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9999;background:linear-gradient(135deg,#FF6B00,#FF3D00);color:#fff;padding:13px 28px;border-radius:50px;font-family:'Tajawal',sans-serif;font-size:15px;font-weight:800;box-shadow:0 8px 32px rgba(255,107,0,.5);animation:fadeUp .3s ease;`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2600);
+}
+
+function renderPage() {
+  const root = document.getElementById("root");
+  
+  if (currentPage === "home") {
+    root.innerHTML = `
+      <section style="min-height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(135deg,rgba(8,8,8,.9) 0%,rgba(20,10,0,.8) 50%,rgba(8,8,8,.9) 100%),url('https://images.unsplash.com/photo-1555939594-58d7cb561702?w=1400&h=900&fit=crop') center/cover;background-attachment:fixed;padding-top:68px;">
+        <div style="position:absolute;inset:0;opacity:.04;background-image:linear-gradient(rgba(255,107,0,.5) 1px,transparent 1px),linear-gradient(90deg,rgba(255,107,0,.5) 1px,transparent 1px);background-size:55px 55px;"></div>
+        <div style="position:relative;z-index:2;text-align:center;padding:0 24px;max-width:820px;">
+          <h1 style="font-family:'Tajawal',sans-serif;font-weight:900;font-size:clamp(52px,11vw,108px);line-height:1.05;margin:0 0 24px;background:linear-gradient(135deg,#fff 0%,#FFD700 45%,#FF6B00 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+            ${currentLang === "ar" ? "نار وبهار" : "NAR & BAHAR"}
+          </h1>
+          <p style="color:rgba(255,255,255,.55);font-size:clamp(16px,2.8vw,22px);line-height:1.75;margin-bottom:44px;">
+            ${currentLang === "ar" ? "حيث تلتقي نيران الشواء بعطر البهارات الأصيلة — تجربة طعام لا تُنسى في قلب حماه" : "Where the fire of grilling meets authentic spices — an unforgettable dining experience in the heart of Hama"}
+          </p>
+          <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <button onclick="goPage('menu')" class="btn-primary">${currentLang === "ar" ? "🍽️ اطلب الآن" : "🍽️ Order Now"}</button>
+            <button onclick="goPage('contact')" class="btn-outline">${currentLang === "ar" ? "📞 تواصل معنا" : "📞 Contact Us"}</button>
+          </div>
+        </div>
+      </section>
+
+      <section style="padding:100px 24px;background:linear-gradient(135deg,#080808 0%,#0C0C0C 50%,#0A0A0A 100%);">
+        <div style="max-width:1100px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:56px;">
+            <p style="color:#FF6B00;font-size:13px;letter-spacing:4px;text-transform:uppercase;margin-bottom:10px;">${currentLang === "ar" ? "أبرز أطباقنا" : "Signature Dishes"}</p>
+            <h2 style="font-size:clamp(30px,5vw,54px);font-weight:900;color:#fff;margin:0;">${currentLang === "ar" ? "الأطباق الأكثر طلباً" : "Most Ordered"}</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:24px;">
+            ${MENU.items.filter(i => i.tags.includes("best")).slice(0,4).map(dish => `
+              <div style="background:#141414;border:1px solid #1e1e1e;border-radius:20px;overflow:hidden;transition:all .3s ease;">
+                <div style="height:180px;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+                  <img src="${dish.image}" alt="${dish.ar}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s;"/>
+                  ${dish.tags.includes("best") ? '<div style="position:absolute;top:10px;left:10px;background:linear-gradient(135deg,#FF6B00,#FF3D00);color:#fff;font-family:Tajawal,sans-serif;font-size:11px;font-weight:800;padding:4px 12px;border-radius:20px;">⭐ ${currentLang === "ar" ? "الأكثر طلباً" : "Bestseller"}</div>' : ''}
+                </div>
+                <div style="padding:20px;">
+                  <h3 style="color:#fff;font-size:17px;font-weight:800;margin:0 0 8px;">${currentLang === "ar" ? dish.ar : dish.en}</h3>
+                  <p style="color:rgba(255,255,255,.45);font-size:13px;line-height:1.65;margin:0 0 16px;">${currentLang === "ar" ? dish.dar : dish.den}</p>
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <span style="color:#FF6B00;font-size:17px;font-weight:900;">${formatPrice(dish.price)}</span>
+                    <button onclick="addToCart({id:${dish.id},ar:'${dish.ar}',en:'${dish.en}',price:${dish.price},image:'${dish.image}'})" class="btn-primary" style="padding:8px 18px;font-size:13px;">+ ${currentLang === "ar" ? "أضف" : "Add"}</button>
+                  </div>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      </section>
+    `;
+  } else if (currentPage === "menu") {
+    root.innerHTML = `
+      <div style="min-height:100vh;background:#080808;padding-top:90px;">
+        <div style="padding:60px 24px 0;text-align:center;max-width:1200px;margin:0 auto;">
+          <h1 style="font-size:clamp(34px,6vw,70px);font-weight:900;color:#fff;margin:0 0 14px;">${currentLang === "ar" ? "المنيو الكامل" : "Full Menu"}</h1>
+          <p style="color:rgba(255,255,255,.38);font-size:15px;margin-bottom:36px;">${currentLang === "ar" ? "أضف ما تريد ثم أرسل طلبك عبر واتساب مباشرةً" : "Add items then send your order directly via WhatsApp"}</p>
+        </div>
+        <div style="max-width:1200px;margin:0 auto;padding:0 24px 80px;display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:22px;">
+          ${MENU.items.map(dish => `
+            <div style="background:#141414;border:1px solid #1e1e1e;border-radius:20px;overflow:hidden;transition:all .3s ease;">
+              <div style="height:180px;background:#000;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;">
+                <img src="${dish.image}" alt="${dish.ar}" style="width:100%;height:100%;object-fit:cover;transition:transform .3s;"/>
+              </div>
+              <div style="padding:20px;">
+                <h3 style="color:#fff;font-size:17px;font-weight:800;margin:0 0 8px;">${currentLang === "ar" ? dish.ar : dish.en}</h3>
+                <p style="color:rgba(255,255,255,.45);font-size:13px;line-height:1.65;margin:0 0 16px;">${currentLang === "ar" ? dish.dar : dish.den}</p>
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                  <span style="color:#FF6B00;font-size:17px;font-weight:900;">${formatPrice(dish.price)}</span>
+                  <button onclick="addToCart({id:${dish.id},ar:'${dish.ar}',en:'${dish.en}',price:${dish.price},image:'${dish.image}'})" class="btn-primary" style="padding:8px 18px;font-size:13px;">+ ${currentLang === "ar" ? "أضف" : "Add"}</button>
+                </div>
+              </div>
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  } else if (currentPage === "about") {
+    root.innerHTML = `
+      <div style="min-height:100vh;background:linear-gradient(135deg,#080808 0%,#0D0D0D 100%);padding-top:90px;">
+        <div style="padding:80px 24px;max-width:1000px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:70px;">
+            <h1 style="font-size:clamp(34px,6vw,70px);font-weight:900;color:#fff;margin:18px 0 14px;">${currentLang === "ar" ? "قصتنا" : "Our Story"}</h1>
+            <div style="width:56px;height:3px;background:linear-gradient(to right,#FF6B00,#FF3D00);margin:0 auto 28px;border-radius:2px;"></div>
+            <p style="color:rgba(255,255,255,.5);font-size:17px;line-height:2;max-width:680px;margin:0 auto;">
+              ${currentLang === "ar" ? "مطعم نار وبهار ولد من شغف حقيقي بالطعام السوري الأصيل. في قلب مدينة حماه، نقدم ما هو أكثر من وجبة — نقدم تجربة وذكرى لا تُنسى." : "Nar & Bahar Restaurant was born from genuine passion for authentic Syrian cuisine. In the heart of Hama, we offer more than just a meal — we offer an unforgettable experience."}
+            </p>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:22px;">
+            <div class="card" style="padding:28px;text-align:center;">
+              <div style="font-size:40px;margin-bottom:14px;">🔥</div>
+              <h3 style="color:#FF6B00;font-size:18px;font-weight:800;margin-bottom:12px;">${currentLang === "ar" ? "الجودة أولاً" : "Quality First"}</h3>
+              <p style="color:rgba(255,255,255,.4);font-size:14px;line-height:1.7;margin:0;">${currentLang === "ar" ? "نستخدم أطازج المكونات يومياً دون أي تنازل" : "We use the freshest ingredients daily without compromise"}</p>
+            </div>
+            <div class="card" style="padding:28px;text-align:center;">
+              <div style="font-size:40px;margin-bottom:14px;">❤️</div>
+              <h3 style="color:#FF6B00;font-size:18px;font-weight:800;margin-bottom:12px;">${currentLang === "ar" ? "بحب حقيقي" : "With Real Passion"}</h3>
+              <p style="color:rgba(255,255,255,.4);font-size:14px;line-height:1.7;margin:0;">${currentLang === "ar" ? "كل طبق يُحضَّر بعشق وشغف حقيقي للطهي" : "Every dish is prepared with genuine love and passion for cooking"}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (currentPage === "contact") {
+    root.innerHTML = `
+      <div style="min-height:100vh;background:#080808;padding-top:90px;">
+        <div style="padding:80px 24px;max-width:900px;margin:0 auto;">
+          <div style="text-align:center;margin-bottom:56px;">
+            <h1 style="font-size:clamp(34px,6vw,70px);font-weight:900;color:#fff;margin:0 0 14px;">${currentLang === "ar" ? "تواصل معنا" : "Contact Us"}</h1>
+            <div style="width:56px;height:3px;background:linear-gradient(to right,#FF6B00,#FF3D00);margin:0 auto;border-radius:2px;"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;margin-bottom:48px;">
+            <div class="card" style="padding:32px;text-align:center;cursor:pointer;">
+              <div style="font-size:46px;margin-bottom:14px;">💬</div>
+              <h3 style="color:#25D366;font-size:16px;font-weight:800;margin-bottom:8px;">WhatsApp</h3>
+              <p style="color:rgba(255,255,255,.55);font-size:15px;margin:0;">0947001493</p>
+            </div>
+            <div class="card" style="padding:32px;text-align:center;">
+              <div style="font-size:46px;margin-bottom:14px;">📍</div>
+              <h3 style="color:#FF6B00;font-size:16px;font-weight:800;margin-bottom:8px;">${currentLang === "ar" ? "الموقع" : "Location"}</h3>
+              <p style="color:rgba(255,255,255,.55);font-size:15px;margin:0;">${currentLang === "ar" ? "حماه، سوريا" : "Hama, Syria"}</p>
+            </div>
+            <div class="card" style="padding:32px;text-align:center;">
+              <div style="font-size:46px;margin-bottom:14px;">⏰</div>
+              <h3 style="color:#FFD700;font-size:16px;font-weight:800;margin-bottom:8px;">${currentLang === "ar" ? "أوقات العمل" : "Hours"}</h3>
+              <p style="color:rgba(255,255,255,.55);font-size:15px;margin:0;">10 AM – 12 PM</p>
+            </div>
+          </div>
+          <div style="text-align:center;background:rgba(37,211,102,.07);border:1px solid rgba(37,211,102,.25);border-radius:24px;padding:48px;">
+            <div style="font-size:60px;margin-bottom:14px;">💬</div>
+            <h2 style="color:#25D366;font-size:26px;font-weight:900;margin-bottom:10px;">${currentLang === "ar" ? "تحدث معنا الآن" : "Chat With Us Now"}</h2>
+            <p style="color:rgba(255,255,255,.45);font-size:15px;margin-bottom:26px;">${currentLang === "ar" ? "للطلبات، الاستفسارات، والحجوزات — نحن هنا دائماً" : "For orders, inquiries, and reservations — we're always here"}</p>
+            <a href="https://wa.me/963947001493" target="_blank" style="display:inline-flex;align-items:center;gap:12px;padding:17px 40px;border-radius:50px;background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;font-family:'Tajawal',sans-serif;font-size:17px;font-weight:900;text-decoration:none;box-shadow:0 8px 28px rgba(37,211,102,.38);">💬 0947001493</a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+updateCartUI();
+renderPage();
+</script>
+
+</body>
+</html>
